@@ -23,7 +23,7 @@ class _Expenses extends State<Expenses> {
     );
   }
 
-  final List<Expense> _expenseList = [
+  final List<Expense> expenseList = [
     Expense(
       title: 'Flutter Course',
       amount: 500.56,
@@ -60,7 +60,7 @@ class _Expenses extends State<Expenses> {
           // Expanded(child: ExpenseList(expenseList: expenseList)),
           Expanded(
             child: ExpenseList(
-              expenseList: _expenseList,
+              expenseList: expenseList,
             ),
           )
         ],

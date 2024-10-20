@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'package:expense_tracker_app/models/expense_category.dart';
+import 'package:expense_tracker_app/widgets/expense_list/expense_item.dart';
 import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
@@ -10,9 +11,10 @@ class NewExpense extends StatefulWidget {
 }
 
 class _NewExpense extends State<NewExpense> {
-
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  DateTime? _selectedDate;
+  ExpenseCategory _selectedCategory = ExpenseCategory.LEISURE;
 
   @override
   void dispose() {
@@ -31,8 +33,22 @@ class _NewExpense extends State<NewExpense> {
     );
 
     setState(() {
-      
+      _selectedDate = pickedDate;
     });
+  }
+
+  void _saveExpense() {
+    setState(
+      () {
+        final enteredAmount = double.tryParse(_amountController.text);
+        if (enteredAmount == null ||
+            enteredAmount < 0 ||
+            _titleController.text.trim().isEmpty ||
+            _selectedDate == null) {
+          return;
+        }
+      },
+    );
   }
 
   @override
@@ -72,7 +88,11 @@ class _NewExpense extends State<NewExpense> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text('Selected Date'),
+                    Text(
+                      (_selectedDate == null)
+                          ? ('No date selected')
+                          : (formatter.format(_selectedDate!)),
+                    ),
                     IconButton(
                       onPressed: _showDateCalendar,
                       icon: const Icon(Icons.calendar_month),
@@ -88,10 +108,31 @@ class _NewExpense extends State<NewExpense> {
           Row(
             // row of save and cancel buttons.
             children: [
+              DropdownButton(
+                value: _selectedCategory,
+                items: ExpenseCategory.values.map(
+                  (category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(
+                        category.name,
+                      ),
+                    );
+                  },
+                ).toList(),
+                onChanged: (value) {
+                  if (value == null) return;
+                  setState(
+                    () {
+                      _selectedCategory = value;
+                    },
+                  );
+                },
+              ),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
+                  _saveExpense();
                 },
                 child: const Text('Save Expense'),
               ),

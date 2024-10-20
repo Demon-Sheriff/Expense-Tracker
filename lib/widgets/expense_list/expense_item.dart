@@ -55,14 +55,18 @@ class ExpenseItem extends StatelessWidget {
                 Text(
                   "\$${expense.amount.toStringAsFixed(2)}",
                 ),
-                const Spacer(), // takes all the space it can get between the up and below widgets
+                const Spacer(), // it will take all the space it can get between the up and below widgets
                 Row(
                   children: [
-                    Icon(categoryIcons[expense.category]),
+                    Icon(
+                      categoryIcons[expense.category],
+                    ),
                     const SizedBox(
                       width: 5,
                     ),
-                    Text(formatter.format(expense.date))
+                    Text(
+                      formatter.format(expense.date),
+                    ),
                   ],
                 ),
               ],
