@@ -1,6 +1,7 @@
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/models/expense_category.dart';
 import 'package:expense_tracker_app/widgets/expense_list/expense_list.dart';
+import 'package:expense_tracker_app/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 
 class Expenses extends StatefulWidget {
@@ -13,6 +14,15 @@ class Expenses extends StatefulWidget {
 }
 
 class _Expenses extends State<Expenses> {
+  void _openModalOverlay() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext ctx) {
+        return const NewExpense();
+      },
+    );
+  }
+
   final List<Expense> _expenseList = [
     Expense(
       title: 'Flutter Course',
@@ -35,7 +45,9 @@ class _Expenses extends State<Expenses> {
         title: const Text('Add Expense'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _openModalOverlay();
+            },
             icon: const Icon(Icons.add),
           ),
         ],
