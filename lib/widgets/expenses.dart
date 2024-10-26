@@ -14,16 +14,24 @@ class Expenses extends StatefulWidget {
 }
 
 class _Expenses extends State<Expenses> {
+  void addExpense(Expense expense) {
+    setState(() {
+      expenseList.add(expense);
+    });
+  }
+
   void _openModalOverlay() {
     showModalBottomSheet(
+      isDismissible: true,
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext ctx) {
-        return const NewExpense();
+        return NewExpense(addExpenseFunction: addExpense);
       },
     );
   }
 
-  final List<Expense> expenseList = [
+  List<Expense> expenseList = [
     Expense(
       title: 'Flutter Course',
       amount: 500.56,
@@ -40,9 +48,25 @@ class _Expenses extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    Widget bodyContent = (expenseList.isEmpty)
+        ? const Center(child: Text('No Expenses Added Yet.'))
+        : ExpenseList(
+            onRemoveItem: (index) {
+              setState(
+                () {
+                  expenseList.removeAt(index);
+                },
+              );
+            },
+            expenseList: expenseList,
+          );
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Expense'),
+        title: const Text(
+          'Add Expense',
+          style: TextStyle(),
+        ),
+        backgroundColor: const Color.fromARGB(255, 66, 57, 182),
         actions: [
           IconButton(
             onPressed: () {
@@ -54,14 +78,13 @@ class _Expenses extends State<Expenses> {
       ),
       body: Column(
         children: [
+          // To complete (Chart.)
           const Text(
             'Chart will be here',
           ),
           // Expanded(child: ExpenseList(expenseList: expenseList)),
           Expanded(
-            child: ExpenseList(
-              expenseList: expenseList,
-            ),
+            child: bodyContent,
           )
         ],
       ),
