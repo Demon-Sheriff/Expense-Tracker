@@ -21,7 +21,7 @@ class ExpenseList extends StatelessWidget {
           //   onRemoveItem(index);
           // },
           confirmDismiss: (direction) async {
-            // if the user swipes to the right.
+            // if the user swipes to the left.
             if (direction == DismissDirection.endToStart) {
               final bool confirmationToDelete = await showDialog(
                 context: context,
@@ -52,13 +52,13 @@ class ExpenseList extends StatelessWidget {
                   );
                 },
               );
-              print(confirmationToDelete);
+              // print(confirmationToDelete);
               return confirmationToDelete;
             }
             return null;
           },
+          // for click effect.
           child: InkWell(
-            // for click effect.
             onTap: () {},
             child: ExpenseItem(
               expense: expenseList[index],
