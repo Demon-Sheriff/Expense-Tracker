@@ -1,6 +1,13 @@
 # expense_tracker_app
 
-A new Flutter project.
+Flutter Expense Tracker App with in-memory CRUD operations.
+
+# Project Demo
+
+
+https://github.com/user-attachments/assets/842bb8f1-bdac-497d-9e49-1703f2cd72bf
+
+
 
 ## Getting Started
 
