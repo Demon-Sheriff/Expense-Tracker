@@ -6,15 +6,8 @@ Flutter Expense Tracker App with in-memory CRUD operations.
 
 https://github.com/user-attachments/assets/842bb8f1-bdac-497d-9e49-1703f2cd72bf
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tech Utilised
+- Stateless and Stateful Widgets for state management
+- Notifier Provider for state management of toggle buttons of light and dark mode
+- flutter syncfusion library for dynamic charts of expenses
+- ListView, SnackBar, showDialog, AlertDailog and many other Widgets..
