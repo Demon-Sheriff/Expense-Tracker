@@ -1,27 +1,51 @@
 import 'package:expense_tracker_app/main.dart';
+import 'package:expense_tracker_app/models/expense.dart';
+import 'package:expense_tracker_app/models/expense_category.dart';
+import 'package:expense_tracker_app/widgets/expenses.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HistChart extends StatelessWidget {
-  const HistChart({super.key});
+  final double maxTotalExpense;
+  final List<Expense> expenseList;
+  const HistChart(
+      {super.key, required this.maxTotalExpense, required this.expenseList});
 
   @override
   Widget build(BuildContext context) {
+    var foodExpense =
+        ExpenseBucket.forCategory(expenseList, ExpenseCategory.FOOD);
+    var travelExpense =
+        ExpenseBucket.forCategory(expenseList, ExpenseCategory.TRAVEL);
+    var leisureExpense =
+        ExpenseBucket.forCategory(expenseList, ExpenseCategory.LEISURE);
+    var workExpense =
+        ExpenseBucket.forCategory(expenseList, ExpenseCategory.WORK);
+
+    print(foodExpense.totalAmountExpended);
+    print(travelExpense.totalAmountExpended);
+    print(workExpense.totalAmountExpended);
+    print(leisureExpense.totalAmountExpended);
+
     final List<ChartData> chartData = [
-      ChartData(x: 'Food', y: 39),
-      ChartData(x: 'Leisure', y: 38),
-      ChartData(x: 'Travel', y: 90),
-      ChartData(x: 'Work', y: 89),
+      ChartData(x: 'Food', y: foodExpense.totalAmountExpended),
+      ChartData(x: 'Leisure', y: leisureExpense.totalAmountExpended),
+      ChartData(x: 'Travel', y: travelExpense.totalAmountExpended),
+      ChartData(x: 'Work', y: workExpense.totalAmountExpended),
     ];
 
     return SfCartesianChart(
-      // plotAreaBackgroundColor: kColorScheme.primary,
-      primaryXAxis: const CategoryAxis(),
+      plotAreaBackgroundColor: kColorScheme.secondaryContainer,
+      primaryXAxis: const CategoryAxis(
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+      ),
       primaryYAxis: const NumericAxis(
         isVisible: false,
         minimum: 0,
-        maximum: 100,
-        interval: 10,
+        interval: 5,
       ),
       series: <CartesianSeries<ChartData, String>>[
         ColumnSeries<ChartData, String>(
