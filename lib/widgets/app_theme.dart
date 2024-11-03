@@ -22,7 +22,8 @@ class _AppTheme extends State<AppTheme> {
         setState(() {
           currentThemeModeIndex++;
           // take mod with length for cyclic behaviour.
-          currentThemeModeIndex %= 2; // taking mod only with 2 for now to hide the system's mode.
+          currentThemeModeIndex %=
+              2; // taking mod only with 2 for now to hide the system's mode.
         });
 
         // Provider.of<ThemeNotifier>(context, listen: false).toggleTheme(currentThemeModeIndex)

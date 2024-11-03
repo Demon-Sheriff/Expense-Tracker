@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/models/expense_category.dart';
+import 'package:expense_tracker_app/widgets/app_theme.dart';
+import 'package:expense_tracker_app/widgets/chart/chart.dart';
 import 'package:expense_tracker_app/widgets/expense_list/expense_list.dart';
 import 'package:expense_tracker_app/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +18,25 @@ class Expenses extends StatefulWidget {
 }
 
 class _Expenses extends State<Expenses> {
+  double maxTotalExpense() {
+    var foodExpense =
+        ExpenseBucket.forCategory(expenseList, ExpenseCategory.FOOD);
+    var travelExpense =
+        ExpenseBucket.forCategory(expenseList, ExpenseCategory.FOOD);
+    var leisureExpense =
+        ExpenseBucket.forCategory(expenseList, ExpenseCategory.FOOD);
+    var workExpense =
+        ExpenseBucket.forCategory(expenseList, ExpenseCategory.WORK);
+
+    double maxExpense = max(
+        workExpense.totalAmountExpended,
+        max(
+            leisureExpense.totalAmountExpended,
+            max(foodExpense.totalAmountExpended,
+                travelExpense.totalAmountExpended)));
+    return maxExpense;
+  }
+
   void addExpense(Expense expense) {
     setState(() {
       expenseList.add(expense);
@@ -22,6 +45,7 @@ class _Expenses extends State<Expenses> {
 
   void _openModalOverlay() {
     showModalBottomSheet(
+      useSafeArea: true,
       isDismissible: true,
       isScrollControlled: true,
       context: context,
@@ -32,22 +56,29 @@ class _Expenses extends State<Expenses> {
   }
 
   List<Expense> expenseList = [
-    Expense(
-      title: 'Flutter Course',
-      amount: 500.56,
-      date: DateTime.now(),
-      category: ExpenseCategory.WORK,
-    ),
-    Expense(
-      title: 'Cold Coffee',
-      amount: 5,
-      date: DateTime.now(),
-      category: ExpenseCategory.FOOD,
-    )
+    // Expense(
+    //   title: 'Flutter Course',
+    //   amount: 500.56,
+    //   date: DateTime.now(),
+    //   category: ExpenseCategory.WORK,
+    // ),
+    // Expense(
+    //   title: 'Cold Coffee',
+    //   amount: 50,
+    //   date: DateTime.now(),
+    //   category: ExpenseCategory.FOOD,
+    // )
   ];
 
   @override
   Widget build(BuildContext context) {
+    var maxExpense = maxTotalExpense();
+
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    print("I am reached");
+    print("${height} ${width}");
+
     Widget bodyContent = (expenseList.isEmpty)
         ? const Center(child: Text('No Expenses Added Yet.'))
         : ExpenseList(
@@ -112,7 +143,6 @@ class _Expenses extends State<Expenses> {
           'Add Expense',
           style: TextStyle(),
         ),
-        backgroundColor: const Color.fromARGB(255, 66, 57, 182),
         actions: [
           IconButton(
             onPressed: () {
@@ -120,20 +150,56 @@ class _Expenses extends State<Expenses> {
             },
             icon: const Icon(Icons.add),
           ),
+          // dark/light/system's mode button
+          const AppTheme(),
         ],
       ),
-      body: Column(
-        children: [
-          // To complete (Chart.)
-          const Text(
-            'Chart will be here',
-          ),
-          // Expanded(child: ExpenseList(expenseList: expenseList)),
-          Expanded(
-            child: bodyContent,
-          )
-        ],
-      ),
+      body: (width < 600)
+          ? Column(
+              children: [
+                // To complete (Chart.)
+                HistChart(
+                  maxTotalExpense: maxExpense,
+                  expenseList: expenseList,
+                ),
+                // Expanded(child: ExpenseList(expenseList: expenseList)),
+                Expanded(
+                  child: bodyContent,
+                )
+              ],
+            )
+          : Row(
+              children: [
+                HistChart(
+                  maxTotalExpense: maxExpense,
+                  expenseList: expenseList,
+                ),
+                // Expanded(child: ExpenseList(expenseList: expenseList)),
+                Expanded(
+                  child: bodyContent,
+                )
+              ],
+            ),
     );
+  }
+}
+
+class ExpenseBucket {
+  final ExpenseCategory expenseCategory;
+  final List<Expense> expenseList;
+
+  const ExpenseBucket(
+      {required this.expenseCategory, required this.expenseList});
+  ExpenseBucket.forCategory(List<Expense> allExpenses, this.expenseCategory)
+      : expenseList = allExpenses
+            .where((expense) => expense.category == expenseCategory)
+            .toList();
+
+  double get totalAmountExpended {
+    double sum = 0;
+    for (Expense expense in expenseList) {
+      sum += expense.amount;
+    }
+    return sum;
   }
 }

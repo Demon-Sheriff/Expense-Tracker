@@ -1,6 +1,7 @@
 import 'package:expense_tracker_app/widgets/expenses.dart';
 import 'package:expense_tracker_app/widgets/theme_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
@@ -11,8 +12,18 @@ var kDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
   seedColor: const Color.fromARGB(255, 5, 99, 125),
 );
+
 void main() {
-  runApp(
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations(
+  //   [
+  //     DeviceOrientation.portraitUp,
+  //   ],
+  // ).then(
+  //   (callback) {},
+  // );
+
+runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeNotifier(),
       child: Consumer<ThemeNotifier>(builder: (
@@ -57,6 +68,7 @@ void main() {
       }),
     ),
   );
+    
 }
 
 // what do we want...

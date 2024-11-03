@@ -13,7 +13,7 @@ const categoryIcons = {
 final formatter = DateFormat.yMd();
 
 // --------------------------------------------------------------------------------------------------------------- //
-
+// UI item (styling to be added.)
 class ExpenseItem extends StatelessWidget {
   final Expense expense;
   const ExpenseItem({super.key, required this.expense});
@@ -22,8 +22,7 @@ class ExpenseItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       // padding: const EdgeInsets.all(10),
-      color: const Color.fromARGB(255, 221, 142, 230),
-      margin: const EdgeInsets.all(10),
+      // margin: const EdgeInsets.all(10),
       // decoration: const BoxDecoration(
       //   color: Color.fromARGB(220, 217, 177, 252),
       //   borderRadius: BorderRadius.all(
@@ -44,6 +43,10 @@ class ExpenseItem extends StatelessWidget {
               children: [
                 Text(
                   expense.title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ],
             ),

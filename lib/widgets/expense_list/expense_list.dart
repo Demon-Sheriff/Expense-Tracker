@@ -14,6 +14,36 @@ class ExpenseList extends StatelessWidget {
       itemCount: expenseList.length,
       itemBuilder: (context, index) {
         return Dismissible(
+          secondaryBackground: Container(
+            alignment: Alignment.centerRight,
+            color: Theme.of(context).colorScheme.error.withOpacity(0.75),
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: const Align(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    "Delete",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          background: Container(
+            color: Colors.green,
+          ),
           key: ValueKey(expenseList[index]),
           // onDismissed: (direction) {
           //   // print('hi');
@@ -24,6 +54,7 @@ class ExpenseList extends StatelessWidget {
             // if the user swipes to the left.
             if (direction == DismissDirection.endToStart) {
               final bool confirmationToDelete = await showDialog(
+                barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
